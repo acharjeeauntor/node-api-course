@@ -1,60 +1,24 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Newdatabase');
 
-var Todo = mongoose.model('Todo',{
-text:{
-  type:String,
-  required: true,
-  minlength:1,
- trim:true
+var{mongoose}=require('./db/mongoose');
+var {Todo}=require('./models/todo');
+var{User} =require('./models/user');
 
-},
- completed:{
-    type:Boolean,
-    default:false
-},
-  completedAt:{
-     type:Number,
-     default:null
-}
+var app = express();
+
+app.use(bodyParser.json());
+app.post('/todos',(req,res)=>{
+var todo = new Todo({
+   text:req.body.text
 });
-
-// var newTodo = new Todo({
-//    text:'new todo added'
-// });
-
-// newTodo.save().then((doc)=>{
-// console.log('Saved Todo',doc);
-// },(e)=>{
-//    console.log(e);
-// });
-
-// var otherTodo = new Todo({ 
-//    text:'   true   '
-// });
-// otherTodo.save().then((doc)=>{
-// console.log(JSON.stringify(doc,undefined,2));
-// },(e)=>{
-//    console.log(e);
-// });
-
-var User = mongoose.model('User',{
- email:{
-   type:String,
-   required: true,
-   minlength:1,
-  trim:true
- }
-});
-
-var firstUser = new User({
- email:'acharjeeauntor@gmail.com'
-});
-
-firstUser.save().then((doc)=>{
-console.log(JSON.stringify(doc,undefined,2));
+todo.save().then((doc)=>{
+res.send(doc);
 },(e)=>{
-   console.log(e);
+   res.status(400).send(e);
+});
+});
+app.listen(3000,()=>{
+console.log('Server Started in the port 3000');
 });
