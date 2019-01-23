@@ -22,3 +22,6 @@ res.send(doc);
 app.listen(3000,()=>{
 console.log('Server Started in the port 3000');
 });
+
+
+module.exports={app};
