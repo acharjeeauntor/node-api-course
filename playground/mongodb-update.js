@@ -43,7 +43,6 @@ db.collection('Users').findOneAndUpdate({
 },(err)=>{
    console.log(err);
 });
-
    
  //client.close();
 });
